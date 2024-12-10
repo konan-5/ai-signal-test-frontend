@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from "../pages/auth/Home";
+import HomePage from "../pages/app/Home";
+import RegisterPage from "../pages/auth/Register";
+import LoginPage from "../pages/auth/Login";
 
 export default function Router() {
 
@@ -9,6 +11,8 @@ export default function Router() {
                 <main className="relative w-full h-full z-10">
                     <Routes>
                         <Route path="/" element={<HomePage />} />
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/register" element={<RegisterPage />} />
                     </Routes>
                 </main >
                 <div className="absolute w-full bottom-20 left-0 flex justify-center">
