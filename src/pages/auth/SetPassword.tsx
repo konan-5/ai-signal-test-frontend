@@ -1,32 +1,26 @@
 import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Button from "../../components/common/Button";
 import FormInput from "../../components/common/FormInput";
-import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import GoogleLoginButton from "../../components/common/GoogleLoginButton";
 
-export default function RegisterPage() {
+export default function SetPasswordPage() {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const token = searchParams.get("token");
 
-    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({
-        email: "",
-        password: ""
+        password: "",
+        confirmPassword: ""
     });
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = () => {
         const newErrors = {
-            email: "",
-            password: ""
+            password: "",
+            confirmPassword: ""
         };
-
-        if (!email) {
-            newErrors.email = "Email is required";
-        } else if (!/\S+@\S+\.\S+/.test(email)) {
-            newErrors.email = "Invalid email format";
-        }
 
         if (!password) {
             newErrors.password = "Password is required";
@@ -36,19 +30,18 @@ export default function RegisterPage() {
 
         setErrors(newErrors);
 
-        if (!newErrors.email && !newErrors.password) {
+        if (!newErrors.password && !newErrors.confirmPassword) {
             setLoading(true);
-            axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
-                email,
+            axios.post(`${import.meta.env.VITE_API_URL}/api/auth/set-password`, {
+                token,
                 password
-            }).then((res) => {
-                navigate('/verify-email');
-                console.log(res.data)
+            }).then(() => {
+                navigate("/login");
             }).catch((err) => {
                 if (err.response?.data) {
                     setErrors({
                         ...newErrors,
-                        email: err.response.data
+                        password: err.response.data
                     });
                 }
             }).finally(() => {
@@ -61,28 +54,23 @@ export default function RegisterPage() {
         <div className="container px-4 mx-auto h-full flex items-center justify-center">
             <div className="border-[1px] border-primary-light rounded-lg p-6 flex flex-col gap-4 items-center justify-center max-w-[500px] w-full">
                 <p className="text-white font-open-sans text-3xl font-bold">
-                    Register
+                    Set New Password
                 </p>
-                <GoogleLoginButton title="Register with Google" />
                 <FormInput
-                    title="Email"
-                    type="email"
-                    value={email}
-                    onChange={(value) => setEmail(value)}
-                    placeholder="Enter your email"
-                    error={errors.email}
-                />
-                <FormInput
-                    title="Password"
+                    title="New Password"
                     type="password"
                     value={password}
                     onChange={(value) => setPassword(value)}
-                    placeholder="Enter your password"
+                    placeholder="Enter your new password"
                     error={errors.password}
                 />
-                <p className="text-gray-light text-sm font-open-sans">Already have an account? <Link to="/login" className="text-secondary underline">Login</Link></p>
-                <Button title="Register" variant="secondary" onClick={handleSubmit} isLoading={loading} />
+                <Button
+                    title="Set Password"
+                    variant="primary"
+                    onClick={handleSubmit}
+                    isLoading={loading}
+                />
             </div>
         </div>
-    )
+    );
 }

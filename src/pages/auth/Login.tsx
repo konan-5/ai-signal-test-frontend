@@ -4,7 +4,7 @@ import FormInput from "../../components/common/FormInput";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../contexts/authProvider";
-
+import GoogleLoginButton from "../../components/common/GoogleLoginButton";
 export default function LoginPage() {
     const { login } = useAuth();
     const [email, setEmail] = useState("");
@@ -49,6 +49,7 @@ export default function LoginPage() {
                         ...newErrors,
                         email: err.response.data
                     });
+                   
                 }
             }).finally(() => {
                 setLoading(false);
@@ -62,6 +63,7 @@ export default function LoginPage() {
                 <p className="text-white font-open-sans text-3xl font-bold">
                     Login
                 </p>
+                <GoogleLoginButton title="Login with Google" />
                 <FormInput
                     title="Email"
                     type="email"

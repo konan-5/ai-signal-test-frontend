@@ -27,7 +27,7 @@ const EmailVerificationPage: React.FC = () => {
                     setLoading(false);
                 });
         } else {
-            setMessage('Token is missing.');
+            setMessage('We sent a verification email to your inbox. Please check your email and click the verification link.');
             setLoading(false);
         }
     }, [location.search]);

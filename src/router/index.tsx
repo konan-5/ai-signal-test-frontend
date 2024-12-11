@@ -5,6 +5,7 @@ import RegisterPage from "../pages/auth/Register";
 import LoginPage from "../pages/auth/Login";
 import VerifyEmailPage from "../pages/auth/VerifyEmail";
 import DashboardPage from "../pages/app/Dashboard";
+import SetPasswordPage from "../pages/auth/SetPassword";
 
 // Add this helper component for protected auth routes
 const RedirectIfAuthenticated = ({ children }: { children: JSX.Element }) => {
@@ -45,6 +46,14 @@ export default function Router() {
                         element={
                             <RedirectIfAuthenticated>
                                 <VerifyEmailPage />
+                            </RedirectIfAuthenticated>
+                        }
+                    />
+                    <Route
+                        path="/set-password"
+                        element={
+                            <RedirectIfAuthenticated>
+                                <SetPasswordPage />
                             </RedirectIfAuthenticated>
                         }
                     />
