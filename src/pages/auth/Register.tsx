@@ -2,6 +2,8 @@ import { useState } from "react";
 import Button from "../../components/common/Button";
 import FormInput from "../../components/common/FormInput";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
 export default function LoginPage() {
 
     const [email, setEmail] = useState("");
@@ -10,6 +12,7 @@ export default function LoginPage() {
         email: "",
         password: ""
     });
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = () => {
         // Reset errors
@@ -33,7 +36,22 @@ export default function LoginPage() {
         setErrors(newErrors);
 
         if (!newErrors.email && !newErrors.password) {
-            console.log("Logging in...");
+            setLoading(true);
+            axios.post("http://localhost:3000/api/auth/register", {
+                email,
+                password
+            }).then((res) => {
+                console.log(res);
+            }).catch((err) => {
+                if (err.response?.data) {
+                    setErrors({
+                        ...newErrors,
+                        email: err.response.data
+                    });
+                }
+            }).finally(() => {
+                setLoading(false);
+            });
         }
     };
 
@@ -60,7 +78,7 @@ export default function LoginPage() {
                     error={errors.password}
                 />
                 <p className="text-gray-light text-sm font-open-sans">Already have an account? <Link to="/login" className="text-secondary underline">Login</Link></p>
-                <Button title="Register" variant="secondary" onClick={handleSubmit} />
+                <Button title="Register" variant="secondary" onClick={handleSubmit} isLoading={loading} />
             </div>
         </div>
     )
