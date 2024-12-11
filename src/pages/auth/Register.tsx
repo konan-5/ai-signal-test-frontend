@@ -1,10 +1,11 @@
 import { useState } from "react";
 import Button from "../../components/common/Button";
 import FormInput from "../../components/common/FormInput";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function LoginPage() {
+export default function RegisterPage() {
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -40,6 +41,7 @@ export default function LoginPage() {
                 email,
                 password
             }).then((res) => {
+                navigate('/verify-email');
                 console.log(res);
             }).catch((err) => {
                 if (err.response?.data) {

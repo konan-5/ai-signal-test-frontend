@@ -3,9 +3,10 @@ import Button from "../../components/common/Button";
 import FormInput from "../../components/common/FormInput";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../../contexts/authProvider";
 
 export default function LoginPage() {
-
+    const { login } = useAuth();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({
@@ -15,7 +16,7 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = () => {
-        // Reset errors
+
         const newErrors = {
             email: "",
             password: ""
@@ -41,7 +42,7 @@ export default function LoginPage() {
                 email,
                 password
             }).then((res) => {
-                console.log(res);
+                login(res?.data.token);
             }).catch((err) => {
                 if (err.response?.data) {
                     setErrors({

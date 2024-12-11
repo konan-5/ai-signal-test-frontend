@@ -1,9 +1,11 @@
 import Button from "../../components/common/Button";
+import { useAuth } from "../../contexts/authProvider";
 import Navbar from "../../layout/Navbar";
 import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
     const navigate = useNavigate();
+    const { user } = useAuth();
     return (
         <div className="">
             <Navbar />
@@ -16,10 +18,18 @@ export default function HomePage() {
                 <p className="text-white text-center font-open-sans my-10 max-w-[500px] mx-auto">
                     Join thousands of traders already profiting with our AI-powered signals. Try it for FREE
                 </p>
-                <Button
-                    title="Register for Free"
-                    variant="secondary"
-                    onClick={() => navigate("/register")} />
+                {
+                    !user ? (
+                        <Button
+                            title="Register for Free"
+                            variant="secondary"
+                            onClick={() => navigate("/register")} />
+                    ) : (
+                        <Button
+                            title="Go to Dashboard"
+                            onClick={() => navigate("/dashboard")} />
+                    )
+                }
             </div>
         </div>
     )
