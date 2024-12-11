@@ -2,6 +2,8 @@ import { useState } from "react";
 import Button from "../../components/common/Button";
 import FormInput from "../../components/common/FormInput";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
 export default function LoginPage() {
 
     const [email, setEmail] = useState("");
@@ -33,7 +35,14 @@ export default function LoginPage() {
         setErrors(newErrors);
 
         if (!newErrors.email && !newErrors.password) {
-            console.log("Logging in...");
+            axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
+                email,
+                password
+            }).then((res) => {
+                console.log(res);
+            }).catch((err) => {
+                console.log(err);
+            });
         }
     };
 

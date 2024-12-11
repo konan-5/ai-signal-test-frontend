@@ -37,7 +37,7 @@ export default function LoginPage() {
 
         if (!newErrors.email && !newErrors.password) {
             setLoading(true);
-            axios.post("http://localhost:3000/api/auth/register", {
+            axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
                 email,
                 password
             }).then((res) => {
