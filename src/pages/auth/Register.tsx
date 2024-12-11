@@ -15,7 +15,6 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = () => {
-        // Reset errors
         const newErrors = {
             email: "",
             password: ""

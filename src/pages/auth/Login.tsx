@@ -12,6 +12,7 @@ export default function LoginPage() {
         email: "",
         password: ""
     });
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = () => {
         // Reset errors
@@ -35,13 +36,21 @@ export default function LoginPage() {
         setErrors(newErrors);
 
         if (!newErrors.email && !newErrors.password) {
+            setLoading(true);
             axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
                 email,
                 password
             }).then((res) => {
                 console.log(res);
             }).catch((err) => {
-                console.log(err);
+                if (err.response?.data) {
+                    setErrors({
+                        ...newErrors,
+                        email: err.response.data
+                    });
+                }
+            }).finally(() => {
+                setLoading(false);
             });
         }
     };
@@ -69,7 +78,7 @@ export default function LoginPage() {
                     error={errors.password}
                 />
                 <p className="text-gray-light text-sm font-open-sans">Don't have an account? <Link to="/register" className="text-secondary underline">Register</Link></p>
-                <Button title="Login" variant="primary" onClick={handleSubmit} />
+                <Button title="Login" variant="primary" onClick={handleSubmit} isLoading={loading} />
             </div>
         </div>
     )
